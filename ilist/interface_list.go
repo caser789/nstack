@@ -158,10 +158,10 @@ func (e *Entry) Prev() Linker {
 
 // SetNext assigns 'entry' as the entry that follows e in the list.
 func (e *Entry) SetNext(entry Linker) {
-    return e.next = entry
+    e.next = entry
 }
 
 // SetPrev assigns 'entry' as the entry that precedes e in the list.
 func (e *Entry) SetPrev(entry Linker) {
-    return e.prev = entry
+    e.prev = entry
 }
