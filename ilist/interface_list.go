@@ -1,4 +1,3 @@
-// Package ilist provides the implementation of intrusive linked lists.
 package ilist
 
 // Linker is the interface that objects must implement if they want to be added
