@@ -5,4 +5,7 @@ package nstack
 import (
 	// ilist package
 	_ "github.com/caser789/nstack/ilist"
+
+	// waiter package
+	_ "github.com/caser789/nstack/waiter"
 )
