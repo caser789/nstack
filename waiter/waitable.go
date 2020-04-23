@@ -1,8 +1,8 @@
 package waiter
 
-// Writable contains the methods that need to be implemented by waitable
+// Waitable contains the methods that need to be implemented by waitable
 // objects.
-type Writable interface {
+type Waitable interface {
     // Readiness returns what the object is currently ready for. If it's
     // not ready for a desired purpose, the caller may use EventRegister and
     // EventUnregister to get notifications once the object becomes ready.
