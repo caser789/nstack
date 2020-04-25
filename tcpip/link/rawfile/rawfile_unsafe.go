@@ -103,7 +103,7 @@ func BlockingRead(fd int, b []byte) (int, error) {
 			events: 1, // POLLIN
 		}
 
-		_, _, e := syscall.Syscall(syscall.SYS_POLL, uintptr(unsafe.Pointer(&event)), 1, uintptr(math.MaxUint64))
+		_, _, e = syscall.Syscall(syscall.SYS_POLL, uintptr(unsafe.Pointer(&event)), 1, uintptr(math.MaxUint64))
 		if e != 0 && e != syscall.EINTR {
 			return 0, e
 		}
