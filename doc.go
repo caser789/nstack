@@ -8,4 +8,7 @@ import (
 
 	// waiter package
 	_ "github.com/caser789/nstack/waiter"
+
+	// tcpip package
+	_ "github.com/caser789/nstack/tcpip"
 )
