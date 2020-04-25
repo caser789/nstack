@@ -71,5 +71,19 @@ func TestTrimFront(t *testing.T) {
 	if want, got := expected, v.views; !reflect.DeepEqual(want, got) {
 		t.Fatalf("TestTrimFront views failed:\n- want: %v\n- got: %v", want, got)
 	}
+}
 
+func TestCopy(t *testing.T) {
+    views := []View{
+        {'a', 'b', 'c'},
+        {'d', 'e'},
+    }
+
+    v := NewVectorisedView(5, views)
+
+    u := v.copy()
+
+	if want, got := v, u; !reflect.DeepEqual(want, got) {
+		t.Fatalf("Testcopy views failed:\n- want: %v\n- got: %v", want, got)
+	}
 }

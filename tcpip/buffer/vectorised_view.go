@@ -47,3 +47,19 @@ func (vv *VectorisedView) TrimFront(count int) {
         vv.RemoveFirst()
     }
 }
+
+// copy returns a deep-copy of the vectorised view.
+// It is an expensive method that should be used only in tests.
+func (vv *VectorisedView) copy() *VectorisedView{
+    uu := &VectorisedView{
+        views: make([]View, len(vv.views)),
+        size: vv.size,
+    }
+
+    for i, v := range vv.views {
+        uu.views[i] = make(View, len(v))
+        copy(uu.views[i], v)
+    }
+
+    return uu
+}
