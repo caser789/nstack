@@ -34,3 +34,16 @@ func (vv *VectorisedView) RemoveFirst() {
     vv.size -= len(vv.views[0])
     vv.views = vv.views[1:]
 }
+
+// TrimFront removes the first "count" bytes of the vectorised view.
+func (vv *VectorisedView) TrimFront(count int) {
+    for count > 0 && len(vv.views) > 0 {
+        if count < len(vv.views[0]) {
+            vv.size -= count
+            vv.views[0].TrimFront(count)
+            return
+        }
+        count -= len(vv.views[0])
+        vv.RemoveFirst()
+    }
+}

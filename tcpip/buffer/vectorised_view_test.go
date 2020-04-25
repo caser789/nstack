@@ -49,3 +49,27 @@ func TestRemoveFirstNotEmpty(t *testing.T) {
 		t.Fatalf("TestRemoveFirstNotEmpty failed:\n- want: %v\n- got: %v", want, got)
 	}
 }
+
+func TestTrimFront(t *testing.T) {
+    views := []View{
+        {'a', 'b', 'c'},
+        {'d', 'e'},
+    }
+
+    v := NewVectorisedView(5, views)
+
+    v.TrimFront(4)
+
+	if want, got := 1, v.Size(); want != got {
+		t.Fatalf("TestTrimFront length failed:\n- want: %v\n- got: %v", want, got)
+	}
+
+    expected := []View{
+        {'e'},
+    }
+
+	if want, got := expected, v.views; !reflect.DeepEqual(want, got) {
+		t.Fatalf("TestTrimFront views failed:\n- want: %v\n- got: %v", want, got)
+	}
+
+}
