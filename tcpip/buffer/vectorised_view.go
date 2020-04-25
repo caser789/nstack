@@ -18,6 +18,7 @@ func (vv *VectorisedView) Size() int {
 	return vv.size
 }
 
+// First returns the first view
 func (vv *VectorisedView) First() View {
 	if len(vv.views) == 0 {
 		panic("vview is empty")
@@ -26,6 +27,7 @@ func (vv *VectorisedView) First() View {
 	return vv.views[0]
 }
 
+// RemoveFirst Removes the frist view if any
 func (vv *VectorisedView) RemoveFirst() {
 	if len(vv.views) == 0 {
 		return

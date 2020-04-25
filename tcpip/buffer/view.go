@@ -9,8 +9,7 @@ func NewView(size int) View {
 	return make(View, size)
 }
 
-// NewView allocates a new buffer and returns an initialized view that covers
-// the whole buffer
+// TrimFront trims the view fron front
 func (v *View) TrimFront(count int) {
 	*v = (*v)[count:]
 }
