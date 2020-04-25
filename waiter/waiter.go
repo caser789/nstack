@@ -12,7 +12,7 @@ import (
 // The zero value for waiter.Queue is an empty queue reaqdy for use.
 type Queue struct {
     list ilist.List
-    mu sync.RWMutext
+    mu sync.RWMutex
 }
 
 // EventRegister adds a waiter to the waiter queue; the waiter will be notified
