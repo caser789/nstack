@@ -25,3 +25,12 @@ func (vv *VectorisedView) First() View {
 
     return vv.views[0]
 }
+
+func (vv *VectorisedView) RemoveFirst() {
+    if len(vv.views) == 0 {
+        return
+    }
+
+    vv.size -= len(vv.views[0])
+    vv.views = vv.views[1:]
+}
