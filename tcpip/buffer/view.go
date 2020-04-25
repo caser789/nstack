@@ -6,13 +6,13 @@ type View []byte
 // NewView allocates a new buffer and returns an initialized view that covers
 // the whole buffer
 func NewView(size int) View {
-    return make(View, size)
+	return make(View, size)
 }
 
 // NewView allocates a new buffer and returns an initialized view that covers
 // the whole buffer
 func (v *View) TrimFront(count int) {
-    *v = (*v)[count:]
+	*v = (*v)[count:]
 }
 
 // CapLength irreversibly reduces the length of the visible section of the
@@ -22,5 +22,5 @@ func (v *View) CapLength(length int) {
 	// expand the view back to include the region just excluded. We want to
 	// prevent that to avoid potential data leak if we have uninitialized
 	// data in excluded region
-    *v = (*v)[:length:length]
+	*v = (*v)[:length:length]
 }

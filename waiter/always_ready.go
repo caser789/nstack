@@ -3,11 +3,11 @@ package waiter
 // AlwaysReady implements the Waitable interface but is always ready. Embedding
 // this struct into another struct makes it implement the boilerplate empty
 // functions automatically.
-type AlwaysReady struct {}
+type AlwaysReady struct{}
 
 // Readiness always returns the input mask because this project is always ready.
 func (*AlwaysReady) Readiness(mask EventMask) EventMask {
-    return mask
+	return mask
 }
 
 // EventRegister doesn't do anything because this object doesn't need to issue
