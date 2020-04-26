@@ -123,3 +123,28 @@ func TestFlags(t *testing.T) {
 		}
 	}
 }
+
+func TestTTL(t *testing.T) {
+	var tests = []struct {
+		b   IPv4
+		ttl uint8
+	}{
+		{
+			b: IPv4([]byte{
+				byte(5), byte(0), byte(0), byte(0),
+				byte(1), byte(2), byte(3 << 5), byte(0),
+				byte(3), byte(2), byte(3 << 5), byte(0),
+			}),
+			ttl: 3,
+		},
+	}
+
+	for _, test := range tests {
+
+		v := test.b.Flags()
+
+		if want, got := test.ttl, v; int(want) != int(got) {
+			t.Fatalf("TestFlags failed:\n- want: %v\n- got: %v", want, got)
+		}
+	}
+}
