@@ -159,3 +159,8 @@ func (b IPv4) TransportProtocol() tcpip.TransportProtocolNumber {
 func (b IPv4) PayloadLength() uint16 {
 	return b.TotalLength() - uint16(b.HeaderLength())
 }
+
+// Payload implements Network.Payload.
+func (b IPv4) Payload() []byte {
+	return b[b.HeaderLength():][:b.PayloadLength()]
+}

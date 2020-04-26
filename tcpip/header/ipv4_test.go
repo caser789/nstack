@@ -1,6 +1,7 @@
 package header
 
 import (
+	"reflect"
 	"testing"
 
 	"github.com/caser789/nstack/tcpip"
@@ -325,6 +326,34 @@ func TestPayloadLength(t *testing.T) {
 
 		if want, got := test.length, v; want != got {
 			t.Fatalf("TestPayloadLength failed:\n- want: %v\n- got: %v", want, got)
+		}
+	}
+}
+
+func TestPayload(t *testing.T) {
+	var tests = []struct {
+		b       IPv4
+		payload []byte
+	}{
+		{
+			b: IPv4([]byte{
+				byte(5), byte(0), byte(0), byte(24),
+				byte(1), byte(2), byte(0b00011111), byte(0),
+				byte(3), byte(2), byte(0), byte(0),
+				byte(3), byte(2), byte(0), byte(0),
+				byte(3), byte(2), byte(0), byte(0),
+				byte(1), byte(2), byte(3), byte(4),
+			}),
+			payload: []byte{byte(1), byte(2), byte(3), byte(4)},
+		},
+	}
+
+	for _, test := range tests {
+
+		v := test.b.Payload()
+
+		if want, got := test.payload, v; !reflect.DeepEqual(want, got) {
+			t.Fatalf("TestPayload failed:\n- want: %v\n- got: %v", want, got)
 		}
 	}
 }
