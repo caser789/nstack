@@ -357,3 +357,15 @@ func TestPayload(t *testing.T) {
 		}
 	}
 }
+
+func TestTOS(t *testing.T) {
+	b := IPv4(make([]byte, 10))
+
+	v := uint8(11)
+	b.SetTOS(v, 0)
+	w, _ := b.TOS()
+
+	if want, got := v, w; v != w {
+		t.Fatalf("TestTOS failed:\n- want: %v\n- got: %v", want, got)
+	}
+}

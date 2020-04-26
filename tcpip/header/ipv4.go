@@ -164,3 +164,13 @@ func (b IPv4) PayloadLength() uint16 {
 func (b IPv4) Payload() []byte {
 	return b[b.HeaderLength():][:b.PayloadLength()]
 }
+
+// TOS returns the "type of service" field of the ipv4 header.
+func (b IPv4) TOS() (uint8, uint32) {
+	return b[tos], 0
+}
+
+// SetTOS sets the "type of service" field of the ipv4 header.
+func (b IPv4) SetTOS(v uint8, _ uint32) {
+	b[tos] = v
+}
