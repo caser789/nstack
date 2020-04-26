@@ -53,3 +53,31 @@ func (s *PortManager) PickEphemeralPort(testPort func(p uint16) (bool, error)) (
 
 	return 0, tcpip.ErrNoPortAvailable
 }
+
+func (s *PortManager) ReservePort(network tcpip.NetworkProtocolNumber, transport tcpip.TransportProtocolNumber, port uint16) (reservedPort uint16, err error) {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+
+	desc := portDescriptor{network, transport, port}
+
+	// If a port is specified, just try to reserve it.
+	if port != 0 {
+		if _, ok := s.allocatedPorts[desc]; ok {
+			return 0, tcpip.ErrPortInUse
+		}
+
+		s.allocatedPorts[desc] = struct{}{}
+		return port, nil
+	}
+
+	// A port wasn't specified, so try to find one.
+	return s.PickEphemeralPort(func(p uint16) (bool, error) {
+		desc.port = p
+		if _, ok := s.allocatedPorts[desc]; ok {
+			return false, nil
+		}
+
+		s.allocatedPorts[desc] = struct{}{}
+		return true, nil
+	})
+}
