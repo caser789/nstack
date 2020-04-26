@@ -1,5 +1,9 @@
 package tcpip
 
+import (
+	"errors"
+)
+
 // Errors that can be returned by the network stack.
 var (
 	ErrUnknownProtocol      = errors.New("unknown protocol")

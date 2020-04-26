@@ -29,4 +29,4 @@ type ReuseAddressOption int
 // SCM_CREDENTIALS socket control messages are enabled.
 //
 // Only supported on Unix sockets.
-type PasscredOption int3
+type PasscredOption int32

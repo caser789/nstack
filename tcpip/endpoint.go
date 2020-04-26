@@ -1,6 +1,8 @@
 package tcpip
 
 import (
+	"io"
+
 	"github.com/caser789/nstack/tcpip/buffer"
 	"github.com/caser789/nstack/waiter"
 )
