@@ -53,3 +53,49 @@ func TestHeaderLength(t *testing.T) {
 	}
 
 }
+
+func TestID(t *testing.T) {
+	var tests = []struct {
+		b  IPv4
+		id int
+	}{
+		{
+			b:  IPv4([]byte{byte(5), byte(0), byte(0), byte(0), byte(1), byte(2), byte(3)}),
+			id: 1<<8 + 2,
+		},
+	}
+
+	for _, test := range tests {
+
+		v := test.b.ID()
+
+		if want, got := test.id, v; int(want) != int(got) {
+			t.Fatalf("TestID failed:\n- want: %v\n- got: %v", want, got)
+		}
+	}
+}
+
+func TestProtocol(t *testing.T) {
+	var tests = []struct {
+		b        IPv4
+		protocol uint8
+	}{
+		{
+			b: IPv4([]byte{
+				byte(5), byte(0), byte(0), byte(0),
+				byte(1), byte(2), byte(3), byte(0),
+				byte(0), byte(11),
+			}),
+			protocol: uint8(11),
+		},
+	}
+
+	for _, test := range tests {
+
+		v := test.b.Protocol()
+
+		if want, got := test.protocol, v; int(want) != int(got) {
+			t.Fatalf("TestID failed:\n- want: %v\n- got: %v", want, got)
+		}
+	}
+}
