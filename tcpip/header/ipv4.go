@@ -138,3 +138,8 @@ func (b IPv4) TotalLength() uint16 {
 func (b IPv4) Checksum() uint16 {
 	return binary.BigEndian.Uint16(b[checksum:])
 }
+
+// SourceAddress returns the "source address" field of the ipv4 header.
+func (b IPv4) SourceAddress() tcpip.Address {
+	return tcpip.Address(b[srcAddr : srcAddr+IPv4AddressSize])
+}
