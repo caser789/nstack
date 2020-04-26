@@ -202,3 +202,23 @@ func (b IPv4) SetSourceAddress(addr tcpip.Address) {
 func (b IPv4) SetDestinationAddress(addr tcpip.Address) {
 	copy(b[dstAddr:dstAddr+IPv4AddressSize], addr)
 }
+
+// CalculateChecksum calculates the checksum of the ipv4 header.
+// TODO
+func (b IPv4) CalculateChecksum() uint16 {
+	return uint16(0)
+}
+
+// Encode encodes all the fields of the ipv4 header.
+func (b IPv4) Encode(i *IPv4Fields) {
+	b[versIHL] = (4 << 4) | ((i.IHL / 4) & 0xf)
+	b[tos] = i.TOS
+	b.SetTotalLength(i.TotalLength)
+	binary.BigEndian.PutUint16(b[id:], i.ID)
+	b.SetFlagsFragmentOffset(i.Flags, i.FragmentOffset)
+	b[ttl] = i.TTL
+	b[protocol] = i.Protocol
+	b.SetChecksum(i.Checksum)
+	copy(b[srcAddr:srcAddr+IPv4AddressSize], i.SrcAddr)
+	copy(b[dstAddr:dstAddr+IPv4AddressSize], i.DstAddr)
+}

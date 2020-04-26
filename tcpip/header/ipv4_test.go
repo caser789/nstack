@@ -434,3 +434,218 @@ func TestSetDestinationAddress(t *testing.T) {
 		t.Fatalf("TestSetDestinationAddress failed:\n- want: %v\n- got: %v", want, got)
 	}
 }
+
+func TestEncode(t *testing.T) {
+	var tests = []struct {
+		b     IPv4
+		field *IPv4Fields
+		desc  string
+	}{
+		{
+			b: IPv4(append([]byte{
+				(4 << 4) | (5 & 0xf),
+			}, make([]byte, 50-1)...)),
+			field: &IPv4Fields{
+				IHL: 20,
+			},
+			desc: "test versIHL",
+		},
+		{
+			b: IPv4(append([]byte{
+				(4 << 4) | (5 & 0xf),
+				21,
+			}, make([]byte, 50-2)...)),
+			field: &IPv4Fields{
+				IHL: 20,
+				TOS: 21,
+			},
+			desc: "test tos",
+		},
+		{
+			b: IPv4(append([]byte{
+				(4 << 4) | (5 & 0xf),
+				21,
+				0, 22,
+			}, make([]byte, 50-4)...)),
+			field: &IPv4Fields{
+				IHL:         20,
+				TOS:         21,
+				TotalLength: 22,
+			},
+			desc: "test total length",
+		},
+		{
+			b: IPv4(append([]byte{
+				(4 << 4) | (5 & 0xf),
+				21,
+				0, 22,
+				0, 23,
+			}, make([]byte, 50-6)...)),
+			field: &IPv4Fields{
+				IHL:         20,
+				TOS:         21,
+				TotalLength: 22,
+				ID:          23,
+			},
+			desc: "test ID",
+		},
+		{
+			b: IPv4(append([]byte{
+				(4 << 4) | (5 & 0xf),
+				21,
+				0, 22,
+				0, 23,
+				3 << 5,
+				24,
+			}, make([]byte, 50-8)...)),
+			field: &IPv4Fields{
+				IHL:            20,
+				TOS:            21,
+				TotalLength:    22,
+				ID:             23,
+				Flags:          3,
+				FragmentOffset: 24 << 3,
+			},
+			desc: "test flags and fragment",
+		},
+		{
+			b: IPv4(append([]byte{
+				(4 << 4) | (5 & 0xf),
+				21,
+				0, 22,
+				0, 23,
+				3 << 5,
+				24,
+				25,
+			}, make([]byte, 50-9)...)),
+			field: &IPv4Fields{
+				IHL:            20,
+				TOS:            21,
+				TotalLength:    22,
+				ID:             23,
+				Flags:          3,
+				FragmentOffset: 24 << 3,
+				TTL:            25,
+			},
+			desc: "test TTL",
+		},
+		{
+			b: IPv4(append([]byte{
+				(4 << 4) | (5 & 0xf),
+				21,
+				0, 22,
+				0, 23,
+				3 << 5,
+				24,
+				25,
+				26,
+			}, make([]byte, 50-10)...)),
+			field: &IPv4Fields{
+				IHL:            20,
+				TOS:            21,
+				TotalLength:    22,
+				ID:             23,
+				Flags:          3,
+				FragmentOffset: 24 << 3,
+				TTL:            25,
+				Protocol:       26,
+			},
+			desc: "test Protocol",
+		},
+		{
+			b: IPv4(append([]byte{
+				(4 << 4) | (5 & 0xf),
+				21,
+				0, 22,
+				0, 23,
+				3 << 5,
+				24,
+				25,
+				26,
+				0,
+				27,
+			}, make([]byte, 50-12)...)),
+			field: &IPv4Fields{
+				IHL:            20,
+				TOS:            21,
+				TotalLength:    22,
+				ID:             23,
+				Flags:          3,
+				FragmentOffset: 24 << 3,
+				TTL:            25,
+				Protocol:       26,
+				Checksum:       27,
+			},
+			desc: "test Checksum",
+		},
+		{
+			b: IPv4(append([]byte{
+				(4 << 4) | (5 & 0xf),
+				21,
+				0, 22,
+				0, 23,
+				3 << 5,
+				24,
+				25,
+				26,
+				0,
+				27,
+				1, 2, 3, 4,
+			}, make([]byte, 50-16)...)),
+			field: &IPv4Fields{
+				IHL:            20,
+				TOS:            21,
+				TotalLength:    22,
+				ID:             23,
+				Flags:          3,
+				FragmentOffset: 24 << 3,
+				TTL:            25,
+				Protocol:       26,
+				Checksum:       27,
+				SrcAddr:        tcpip.Address([]byte{1, 2, 3, 4}),
+			},
+			desc: "test SrcAddr",
+		},
+		{
+			b: IPv4(append([]byte{
+				(4 << 4) | (5 & 0xf),
+				21,
+				0, 22,
+				0, 23,
+				3 << 5,
+				24,
+				25,
+				26,
+				0,
+				27,
+				1, 2, 3, 4,
+				4, 3, 2, 1,
+			}, make([]byte, 50-20)...)),
+			field: &IPv4Fields{
+				IHL:            20,
+				TOS:            21,
+				TotalLength:    22,
+				ID:             23,
+				Flags:          3,
+				FragmentOffset: 24 << 3,
+				TTL:            25,
+				Protocol:       26,
+				Checksum:       27,
+				SrcAddr:        tcpip.Address([]byte{1, 2, 3, 4}),
+				DstAddr:        tcpip.Address([]byte{4, 3, 2, 1}),
+			},
+			desc: "test DstAddr",
+		},
+	}
+
+	for _, test := range tests {
+		bb := IPv4(make([]byte, 50))
+
+		bb.Encode(test.field)
+
+		if want, got := test.b, bb; !reflect.DeepEqual(want, got) {
+			t.Fatalf("TestEncode %s failed:\n- want: %v\n- got: %v", test.desc, want, got)
+		}
+
+	}
+}
