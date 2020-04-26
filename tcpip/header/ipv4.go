@@ -149,3 +149,8 @@ func (b IPv4) SourceAddress() tcpip.Address {
 func (b IPv4) DestinationAddress() tcpip.Address {
 	return tcpip.Address(b[dstAddr : dstAddr+IPv4AddressSize])
 }
+
+// TransportProtocol implements Network.TransportProtocol.
+func (b IPv4) TransportProtocol() tcpip.TransportProtocolNumber {
+	return tcpip.TransportProtocolNumber(b.Protocol())
+}

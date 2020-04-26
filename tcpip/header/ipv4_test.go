@@ -278,3 +278,28 @@ func TestDestinationAddress(t *testing.T) {
 		}
 	}
 }
+
+func TestTransportProtocolNumber(t *testing.T) {
+	var tests = []struct {
+		b        IPv4
+		protocol tcpip.TransportProtocolNumber
+	}{
+		{
+			b: IPv4([]byte{
+				byte(5), byte(0), byte(0), byte(0),
+				byte(1), byte(2), byte(3), byte(0),
+				byte(0), byte(11),
+			}),
+			protocol: tcpip.TransportProtocolNumber(uint8(11)),
+		},
+	}
+
+	for _, test := range tests {
+
+		v := test.b.TransportProtocol()
+
+		if want, got := test.protocol, v; want != got {
+			t.Fatalf("TestTransportProtocolNumber failed:\n- want: %v\n- got: %v", want, got)
+		}
+	}
+}
