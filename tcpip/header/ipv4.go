@@ -154,3 +154,8 @@ func (b IPv4) DestinationAddress() tcpip.Address {
 func (b IPv4) TransportProtocol() tcpip.TransportProtocolNumber {
 	return tcpip.TransportProtocolNumber(b.Protocol())
 }
+
+// PayloadLength returns the length of the payload portion of the ipv4 packet.
+func (b IPv4) PayloadLength() uint16 {
+	return b.TotalLength() - uint16(b.HeaderLength())
+}

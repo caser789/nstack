@@ -303,3 +303,28 @@ func TestTransportProtocolNumber(t *testing.T) {
 		}
 	}
 }
+
+func TestPayloadLength(t *testing.T) {
+	var tests = []struct {
+		b      IPv4
+		length uint16
+	}{
+		{
+			b: IPv4([]byte{
+				byte(15), byte(0), byte(0b10101010), byte(0),
+				byte(1), byte(2), byte(0b00011111), byte(0),
+				byte(3), byte(2), byte(3 << 5), byte(0),
+			}),
+			length: uint16(0b1010101000000000) - uint16(15*4),
+		},
+	}
+
+	for _, test := range tests {
+
+		v := test.b.PayloadLength()
+
+		if want, got := test.length, v; want != got {
+			t.Fatalf("TestPayloadLength failed:\n- want: %v\n- got: %v", want, got)
+		}
+	}
+}
