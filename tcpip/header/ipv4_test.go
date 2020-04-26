@@ -365,7 +365,19 @@ func TestTOS(t *testing.T) {
 	b.SetTOS(v, 0)
 	w, _ := b.TOS()
 
-	if want, got := v, w; v != w {
+	if want, got := v, w; want != got {
 		t.Fatalf("TestTOS failed:\n- want: %v\n- got: %v", want, got)
+	}
+}
+
+func TestSetTotalLength(t *testing.T) {
+	b := IPv4(make([]byte, 10))
+
+	n := uint16(13)
+	b.SetTotalLength(n)
+	m := b.TotalLength()
+
+	if want, got := n, m; want != got {
+		t.Fatalf("TestSetTotalLength failed:\n- want: %v\n- got: %v", want, got)
 	}
 }

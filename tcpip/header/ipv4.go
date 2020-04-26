@@ -174,3 +174,8 @@ func (b IPv4) TOS() (uint8, uint32) {
 func (b IPv4) SetTOS(v uint8, _ uint32) {
 	b[tos] = v
 }
+
+// SetTotalLength sets the "total length" field of the ipv4 header.
+func (b IPv4) SetTotalLength(totalLength uint16) {
+	binary.BigEndian.PutUint16(b[totalLen:], totalLength)
+}
