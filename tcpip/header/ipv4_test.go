@@ -410,3 +410,15 @@ func TestSetFlagsFragmentOffset(t *testing.T) {
 		t.Fatalf("TestSetFlagsFragmentOffset offset failed:\n- want: %v\n- got: %v", want, got)
 	}
 }
+
+func TestSetSourceAddress(t *testing.T) {
+	b := IPv4(make([]byte, 20))
+
+	addr := tcpip.Address([]byte{byte(1), byte(3), byte(5), byte(7)})
+
+	b.SetSourceAddress(addr)
+
+	if want, got := addr, b.SourceAddress(); want != got {
+		t.Fatalf("TestSetSourceAddress failed:\n- want: %v\n- got: %v", want, got)
+	}
+}

@@ -191,3 +191,8 @@ func (b IPv4) SetFlagsFragmentOffset(flags uint8, offset uint16) {
 	v := (uint16(flags) << 13) | (offset >> 3)
 	binary.BigEndian.PutUint16(b[flagsFO:], v)
 }
+
+// SetSourceAddress sets the "source address" field of the ipv4 header.
+func (b IPv4) SetSourceAddress(addr tcpip.Address) {
+	copy(b[srcAddr:srcAddr+IPv4AddressSize], addr)
+}
