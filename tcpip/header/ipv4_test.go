@@ -144,7 +144,7 @@ func TestTTL(t *testing.T) {
 		v := test.b.Flags()
 
 		if want, got := test.ttl, v; int(want) != int(got) {
-			t.Fatalf("TestFlags failed:\n- want: %v\n- got: %v", want, got)
+			t.Fatalf("TestTTL failed:\n- want: %v\n- got: %v", want, got)
 		}
 	}
 }
@@ -169,7 +169,32 @@ func TestFragmentOffset(t *testing.T) {
 		v := test.b.FragmentOffset()
 
 		if want, got := test.offset, v; int(want) != int(got) {
-			t.Fatalf("TestFlags failed:\n- want: %v\n- got: %v", want, got)
+			t.Fatalf("TestFragmentOffset failed:\n- want: %v\n- got: %v", want, got)
+		}
+	}
+}
+
+func TestTotalLength(t *testing.T) {
+	var tests = []struct {
+		b      IPv4
+		length uint16
+	}{
+		{
+			b: IPv4([]byte{
+				byte(5), byte(0), byte(0b10101010), byte(0),
+				byte(1), byte(2), byte(0b00011111), byte(0),
+				byte(3), byte(2), byte(3 << 5), byte(0),
+			}),
+			length: uint16(0b1010101000000000),
+		},
+	}
+
+	for _, test := range tests {
+
+		v := test.b.TotalLength()
+
+		if want, got := test.length, v; int(want) != int(got) {
+			t.Fatalf("TestTotalLength failed:\n- want: %v\n- got: %v", want, got)
 		}
 	}
 }

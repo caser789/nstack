@@ -128,3 +128,8 @@ func (b IPv4) TTL() uint8 {
 func (b IPv4) FragmentOffset() uint16 {
 	return binary.BigEndian.Uint16(b[flagsFO:]) << 3
 }
+
+// TotalLength returns the "total length" field of the ipv4 header.
+func (b IPv4) TotalLength() uint16 {
+	return binary.BigEndian.Uint16(b[totalLen:])
+}
