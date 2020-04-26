@@ -251,3 +251,30 @@ func TestSourceAddress(t *testing.T) {
 		}
 	}
 }
+
+func TestDestinationAddress(t *testing.T) {
+	var tests = []struct {
+		b    IPv4
+		addr tcpip.Address
+	}{
+		{
+			b: IPv4([]byte{
+				byte(5), byte(0), byte(0b10101010), byte(0),
+				byte(1), byte(2), byte(0b00011111), byte(0),
+				byte(3), byte(2), byte(0), byte(0),
+				byte(1), byte(2), byte(3), byte(4),
+				byte(4), byte(3), byte(2), byte(1),
+			}),
+			addr: tcpip.Address([]byte{byte(4), byte(3), byte(2), byte(1)}),
+		},
+	}
+
+	for _, test := range tests {
+
+		v := test.b.DestinationAddress()
+
+		if want, got := test.addr, v; want != got {
+			t.Fatalf("TestDestinationAddress failed:\n- want: %v\n- got: %v", want, got)
+		}
+	}
+}

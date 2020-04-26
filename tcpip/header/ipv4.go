@@ -143,3 +143,9 @@ func (b IPv4) Checksum() uint16 {
 func (b IPv4) SourceAddress() tcpip.Address {
 	return tcpip.Address(b[srcAddr : srcAddr+IPv4AddressSize])
 }
+
+// DestinationAddress returns the "destination address" field of the ipv4
+// header.
+func (b IPv4) DestinationAddress() tcpip.Address {
+	return tcpip.Address(b[dstAddr : dstAddr+IPv4AddressSize])
+}
