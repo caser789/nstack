@@ -649,3 +649,61 @@ func TestEncode(t *testing.T) {
 
 	}
 }
+
+func TestIsValid(t *testing.T) {
+	var tests = []struct {
+		b     IPv4
+		valid bool
+		desc  string
+	}{
+		{
+			b: IPv4([]byte{
+				1, 2, 3, 4,
+			}),
+			valid: false,
+			desc:  "invalid minimum size",
+		},
+		{
+			b: IPv4([]byte{
+				4, 0, 0, 4,
+				1, 0, 0, 4,
+				1, 0, 0, 4,
+				1, 0, 0, 4,
+				1, 0, 0, 4,
+			}),
+			valid: false,
+			desc:  "HeaderLength > TotalLength",
+		},
+		{
+			b: IPv4([]byte{
+				4, 0, 0, 21,
+				1, 0, 0, 4,
+				1, 0, 0, 4,
+				1, 0, 0, 4,
+				1, 0, 0, 4,
+			}),
+			valid: false,
+			desc:  "total length > len(b)",
+		},
+		{
+			b: IPv4([]byte{
+				4, 0, 0, 21,
+				1, 0, 0, 4,
+				1, 0, 0, 4,
+				1, 0, 0, 4,
+				1, 0, 0, 4,
+				1, 0, 0, 4,
+			}),
+			valid: true,
+			desc:  "ok",
+		},
+	}
+
+	for _, tt := range tests {
+
+		if want, got := tt.valid, tt.b.IsValid(); want != got {
+
+			t.Fatalf("TestIsValid %s failed:\n- want: %v\n- got: %v", tt.desc, want, got)
+		}
+	}
+}

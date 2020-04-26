@@ -222,3 +222,26 @@ func (b IPv4) Encode(i *IPv4Fields) {
 	copy(b[srcAddr:srcAddr+IPv4AddressSize], i.SrcAddr)
 	copy(b[dstAddr:dstAddr+IPv4AddressSize], i.DstAddr)
 }
+
+// EncodePartial updates the total length and checksum fields of ipv4 header,
+// taking in the partial checksum, which is the checksum of the header without
+// the total length and checksum fields. It is useful in cases when similar
+// packets are produced.
+// TODO
+func (b IPv4) EncodePartial(partialChecksum, totalLength uint16) {
+}
+
+// IsValid performs basic validation on the packet.
+func (b IPv4) IsValid() bool {
+	if len(b) < IPv4MinimumSize {
+		return false
+	}
+
+	hlen := int(b.HeaderLength())
+	tlen := int(b.TotalLength())
+	if hlen > tlen || tlen > len(b) {
+		return false
+	}
+
+	return true
+}
