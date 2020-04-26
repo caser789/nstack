@@ -393,3 +393,20 @@ func TestSetChecksum(t *testing.T) {
 		t.Fatalf("TestSetChecksum failed:\n- want: %v\n- got: %v", want, got)
 	}
 }
+
+func TestSetFlagsFragmentOffset(t *testing.T) {
+	b := IPv4(make([]byte, 20))
+
+	flags := uint8(3)
+	offset := uint16(161 << 3)
+
+	b.SetFlagsFragmentOffset(flags, offset)
+
+	if want, got := flags, b.Flags(); want != got {
+		t.Fatalf("TestSetFlagsFragmentOffset flags failed:\n- want: %v\n- got: %v", want, got)
+	}
+
+	if want, got := offset, b.FragmentOffset(); want != got {
+		t.Fatalf("TestSetFlagsFragmentOffset offset failed:\n- want: %v\n- got: %v", want, got)
+	}
+}

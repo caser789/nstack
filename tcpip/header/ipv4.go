@@ -184,3 +184,10 @@ func (b IPv4) SetTotalLength(totalLength uint16) {
 func (b IPv4) SetChecksum(v uint16) {
 	binary.BigEndian.PutUint16(b[checksum:], v)
 }
+
+// SetFlagsFragmentOffset sets the "flags" and "fragment offset" fields of the
+// ipv4 header.
+func (b IPv4) SetFlagsFragmentOffset(flags uint8, offset uint16) {
+	v := (uint16(flags) << 13) | (offset >> 3)
+	binary.BigEndian.PutUint16(b[flagsFO:], v)
+}
