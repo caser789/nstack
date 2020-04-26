@@ -196,3 +196,9 @@ func (b IPv4) SetFlagsFragmentOffset(flags uint8, offset uint16) {
 func (b IPv4) SetSourceAddress(addr tcpip.Address) {
 	copy(b[srcAddr:srcAddr+IPv4AddressSize], addr)
 }
+
+// SetDestinationAddress sets the "destination address" field of the ipv4
+// header.
+func (b IPv4) SetDestinationAddress(addr tcpip.Address) {
+	copy(b[dstAddr:dstAddr+IPv4AddressSize], addr)
+}

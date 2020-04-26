@@ -422,3 +422,15 @@ func TestSetSourceAddress(t *testing.T) {
 		t.Fatalf("TestSetSourceAddress failed:\n- want: %v\n- got: %v", want, got)
 	}
 }
+
+func TestSetDestinationAddress(t *testing.T) {
+	b := IPv4(make([]byte, 20))
+
+	addr := tcpip.Address([]byte{byte(1), byte(3), byte(5), byte(7)})
+
+	b.SetDestinationAddress(addr)
+
+	if want, got := addr, b.DestinationAddress(); want != got {
+		t.Fatalf("TestSetDestinationAddress failed:\n- want: %v\n- got: %v", want, got)
+	}
+}
