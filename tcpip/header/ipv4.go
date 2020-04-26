@@ -179,3 +179,8 @@ func (b IPv4) SetTOS(v uint8, _ uint32) {
 func (b IPv4) SetTotalLength(totalLength uint16) {
 	binary.BigEndian.PutUint16(b[totalLen:], totalLength)
 }
+
+// SetChecksum sets the checksum field of the ipv4 header.
+func (b IPv4) SetChecksum(v uint16) {
+	binary.BigEndian.PutUint16(b[checksum:], v)
+}

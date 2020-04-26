@@ -381,3 +381,15 @@ func TestSetTotalLength(t *testing.T) {
 		t.Fatalf("TestSetTotalLength failed:\n- want: %v\n- got: %v", want, got)
 	}
 }
+
+func TestSetChecksum(t *testing.T) {
+	b := IPv4(make([]byte, 20))
+
+	n := uint16(13)
+	b.SetChecksum(n)
+	m := b.Checksum()
+
+	if want, got := n, m; want != got {
+		t.Fatalf("TestSetChecksum failed:\n- want: %v\n- got: %v", want, got)
+	}
+}
