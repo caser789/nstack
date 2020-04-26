@@ -148,3 +148,28 @@ func TestTTL(t *testing.T) {
 		}
 	}
 }
+
+func TestFragmentOffset(t *testing.T) {
+	var tests = []struct {
+		b      IPv4
+		offset uint16
+	}{
+		{
+			b: IPv4([]byte{
+				byte(5), byte(0), byte(0), byte(0),
+				byte(1), byte(2), byte(0b00011111), byte(0),
+				byte(3), byte(2), byte(3 << 5), byte(0),
+			}),
+			offset: 0b00011111 << 11,
+		},
+	}
+
+	for _, test := range tests {
+
+		v := test.b.FragmentOffset()
+
+		if want, got := test.offset, v; int(want) != int(got) {
+			t.Fatalf("TestFlags failed:\n- want: %v\n- got: %v", want, got)
+		}
+	}
+}
