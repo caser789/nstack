@@ -6,15 +6,15 @@ import (
 
 func TestIPVersion(t *testing.T) {
 	var tests = []struct {
-		b        []byte
+		b       []byte
 		version int
 	}{
 		{
-			b:        []byte{},
+			b:       []byte{},
 			version: -1,
 		},
 		{
-			b:        []byte{byte(4 << 4)},
+			b:       []byte{byte(4 << 4)},
 			version: 4,
 		},
 	}
@@ -28,21 +28,20 @@ func TestIPVersion(t *testing.T) {
 	}
 }
 
-
 func TestHeaderLength(t *testing.T) {
-    var tests = []struct{
-        b IPv4
-        length uint8
-    }{
-        {
-            b: IPv4([]byte{byte(5)}),
-            length: 20,
-        },
-        {
-            b: IPv4([]byte{byte(15)}),
-            length: 60,
-        },
-    }
+	var tests = []struct {
+		b      IPv4
+		length uint8
+	}{
+		{
+			b:      IPv4([]byte{byte(5)}),
+			length: 20,
+		},
+		{
+			b:      IPv4([]byte{byte(15)}),
+			length: 60,
+		},
+	}
 
 	for _, test := range tests {
 

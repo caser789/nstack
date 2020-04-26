@@ -95,9 +95,9 @@ func IPVersion(b []byte) int {
 
 // HeaderLength returns the value of the "header length" field of the ipv4
 // header.
-// 
+//
 // IHL has 4 bits that specify the number of 32-bit words (4bytes) in the header
 // The minimum of IHL is 5
 func (b IPv4) HeaderLength() uint8 {
-    return (b[versIHL] & 0xf) * 4
+	return (b[versIHL] & 0xf) * 4
 }
