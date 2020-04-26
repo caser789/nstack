@@ -113,3 +113,8 @@ func (b IPv4) ID() uint16 {
 func (b IPv4) Protocol() uint8 {
 	return b[protocol]
 }
+
+// Flags returns the "flags" field of the ipv4 header.
+func (b IPv4) Flags() uint8 {
+	return uint8(binary.BigEndian.Uint16(b[flagsFO:]) >> 13)
+}
