@@ -133,3 +133,8 @@ func (b IPv4) FragmentOffset() uint16 {
 func (b IPv4) TotalLength() uint16 {
 	return binary.BigEndian.Uint16(b[totalLen:])
 }
+
+// Checksum returns the checksum field of the ipv4 header.
+func (b IPv4) Checksum() uint16 {
+	return binary.BigEndian.Uint16(b[checksum:])
+}

@@ -198,3 +198,28 @@ func TestTotalLength(t *testing.T) {
 		}
 	}
 }
+
+func TestChecksum(t *testing.T) {
+	var tests = []struct {
+		b        IPv4
+		checksum uint16
+	}{
+		{
+			b: IPv4([]byte{
+				byte(5), byte(0), byte(0b10101010), byte(0),
+				byte(1), byte(2), byte(0b00011111), byte(0),
+				byte(3), byte(2), byte(0b10111011), byte(0),
+			}),
+			checksum: uint16(0b1011101100000000),
+		},
+	}
+
+	for _, test := range tests {
+
+		v := test.b.Checksum()
+
+		if want, got := test.checksum, v; int(want) != int(got) {
+			t.Fatalf("TestChecksum failed:\n- want: %v\n- got: %v", want, got)
+		}
+	}
+}
