@@ -54,6 +54,9 @@ func (s *PortManager) PickEphemeralPort(testPort func(p uint16) (bool, error)) (
 	return 0, tcpip.ErrNoPortAvailable
 }
 
+// ReservePort marks a port as reserved so that it cannot be reserved by another
+// ednpoint. If port is zero, ReservePort will search for an unreserved
+// ephemeral port and reserve it, returning its value in the "port" return value.
 func (s *PortManager) ReservePort(network tcpip.NetworkProtocolNumber, transport tcpip.TransportProtocolNumber, port uint16) (reservedPort uint16, err error) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
@@ -80,4 +83,13 @@ func (s *PortManager) ReservePort(network tcpip.NetworkProtocolNumber, transport
 		s.allocatedPorts[desc] = struct{}{}
 		return true, nil
 	})
+}
+
+// ReleasePort releases the reservation on a port so that it can be reserved by
+// other endpoints.
+func (s *PortManager) ReleasePort(network tcpip.NetworkProtocolNumber, transport tcpip.TransportProtocolNumber, port uint16) {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+
+	delete(s.allocatedPorts, portDescriptor{network, transport, port})
 }

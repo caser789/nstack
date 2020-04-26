@@ -72,3 +72,22 @@ func TestReservePort(t *testing.T) {
 		t.Fatalf("TestReservePort port failed:\n- want: %v\n- got: %v", want, got)
 	}
 }
+
+func TestReleasePort(t *testing.T) {
+	p := NewPortManager()
+
+	network := tcpip.NetworkProtocolNumber(1)
+	transport := tcpip.TransportProtocolNumber(2)
+	port := uint16(16700)
+
+	desc := portDescriptor{network, transport, port}
+	p.allocatedPorts[desc] = struct{}{}
+
+	p.ReleasePort(network, transport, port)
+
+	_, ok := p.allocatedPorts[desc]
+
+	if want, got := false, ok; want != got {
+		t.Fatalf("TestReleasePort failed:\n- want: %v\n- got: %v", want, got)
+	}
+}
