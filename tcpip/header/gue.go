@@ -37,3 +37,8 @@ const (
 func (b GUE) TypeAndControl() uint8 {
 	return b[typeHLen] >> 5
 }
+
+// HeaderLength returns the total length of the GUE header.
+func (b GUE) HeaderLength() uint8 {
+	return 4 + 4*(b[typeHLen]&0x1f)
+}
