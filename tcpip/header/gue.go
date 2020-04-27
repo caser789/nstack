@@ -42,3 +42,18 @@ func (b GUE) TypeAndControl() uint8 {
 func (b GUE) HeaderLength() uint8 {
 	return 4 + 4*(b[typeHLen]&0x1f)
 }
+
+// Protocol returns the protocol field of the GUE header.
+func (b GUE) Protocol() uint8 {
+	return b[encapProto]
+}
+
+// Encode encodes all the fields of the GUE header.
+func (b GUE) Encode(i *GUEFields) {
+	ctl := uint8(0)
+	if i.Control {
+		ctl = 1 << 5
+	}
+	b[typeHLen] = ctl | i.Type<<6 | (i.HeaderLength-4)/4
+	b[encapProto] = i.Protocol
+}
