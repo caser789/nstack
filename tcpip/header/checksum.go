@@ -1,8 +1,8 @@
 package header
 
-// import (
-// 	"github.com/caser789/nstack/tcpip"
-// )
+import (
+	"github.com/caser789/nstack/tcpip"
+)
 
 // Checksum calculate the checksum (as defined in RFC 1071) of the bytes in the
 // given byte array.
