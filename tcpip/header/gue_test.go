@@ -85,7 +85,7 @@ func TestGUEEncode(t *testing.T) {
 
 		bb.Encode(test.fields)
 
-		if want, got := test.b, bb; reflect.DeepEqual(want, got) {
+		if want, got := test.b, bb; !reflect.DeepEqual(want, got) {
 			t.Fatalf("TestGUEEncode failed:\n- want: %v\n- got: %v", want, got)
 		}
 	}
