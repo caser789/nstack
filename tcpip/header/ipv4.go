@@ -206,7 +206,7 @@ func (b IPv4) SetDestinationAddress(addr tcpip.Address) {
 // CalculateChecksum calculates the checksum of the ipv4 header.
 // TODO
 func (b IPv4) CalculateChecksum() uint16 {
-	return uint16(0)
+	return Checksum(b[:b.HeaderLength()], 0)
 }
 
 // Encode encodes all the fields of the ipv4 header.
@@ -229,6 +229,9 @@ func (b IPv4) Encode(i *IPv4Fields) {
 // packets are produced.
 // TODO
 func (b IPv4) EncodePartial(partialChecksum, totalLength uint16) {
+	b.SetTotalLength(totalLength)
+	checksum := Checksum(b[totalLen:totalLen+2], partialChecksum)
+	b.SetChecksum(^checksum)
 }
 
 // IsValid performs basic validation on the packet.
