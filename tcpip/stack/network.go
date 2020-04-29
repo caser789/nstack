@@ -35,7 +35,7 @@ type NetworkEndpoint interface {
 	// WritePacket writes a packet to the given destination address and
 	// protocol.
 	// TODO
-	WritePacket() error
+	WritePacket(r *Route, hdr *buffer.Prependable, payload buffer.View, protocol tcpip.TransportProtocolNumber) error
 
 	// HandlePacket is the interface that needs to be implemented by network
 	// Protocols (e.g., IPv4, ipv6) that want to be part of the networking stack.
